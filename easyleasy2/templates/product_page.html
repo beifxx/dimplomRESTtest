@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+            <link rel="stylesheet" href="{% static 'user_products_style.css' %}">
+
+    <script type="text/javascript">
+        var input = document.URL;
+        var id = parseInt( input.match(/product\/(\d+)/)[1] );
+        var product_url = 'http://127.0.0.1:8000/api/products/' + id.toString()
+            let x
+			fetch(product_url)
+			.then((resp) => resp.json())
+			.then(function(data){
+				x = data
+                console.log('Data:', x)
+
+                document.getElementById("name").innerHTML = String(x.name)
+                document.getElementById("min_duration").innerHTML = 'Минимальная длительность - ' + String(x.min_duration) + ' месяцев'
+                document.getElementById("max_duration").innerHTML = 'Максимальная длительность - '+ String(x.max_duration) +' месяцев'
+                document.getElementById("type").innerHTML = 'Вид лизинга - ' + String(x.type)
+                document.getElementById("min_amount").innerHTML = 'Минимальнная сумма - '+ String(x.min_amount) + ' рублей'
+                document.getElementById("max_amount").innerHTML = 'Максимальная сумма - ' + String(x.max_amount) + ' рублей'
+
+            })
+    </script>
+
+</head>
+<body>
+{% include 'navbar_user.html' %}
+
+{% block content %}
+
+<div class="product">
+    <h1 id="name"></h1>
+    Выгодные тарифы для этого и других продуктов очень приятно удивляют всех граждан
+    <h2>Характеристики продукта:</h2>
+    <h4 id="min_duration"></h4>
+    <h4 id="max_duration"></h4>
+    <h4 id="type"></h4>
+    <h4 id="min_amount"></h4>
+    <h4 id="max_amount"></h4>
+{#    <h4 >Минимальная процентная ставка - </h4>#}
+
+</div>
+
+
+{% endblock %}
+</body>
+</html>

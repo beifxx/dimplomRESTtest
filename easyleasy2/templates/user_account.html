@@ -1,0 +1,87 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'support_style.css' %}">
+</head>
+    <body>
+{% include 'navbar_user.html' %}
+
+{% block content %}
+{#<form method="POST">#}
+{#    {% csrf_token %}#}
+{#    <table>#}
+{#        {{ form_username }}#}
+{#    </table>#}
+{#    <input type="submit" value="Изменить">#}
+{#</form>#}
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form_password }}
+    </table>
+    <input type="submit" value="Изменить">
+</form>
+
+
+    <h2>Мои заявки</h2>
+{% for application in applications %}
+
+    <div>
+    <hr>
+    Продукт - {{ application.product.name }}<br>
+    Дата подачи заявки - {{ application.date_applied }}<br>
+    {{ application.client_profile.name }} <br>
+    {{ application.client_profile.last_name }} <br>
+    {{ application.status }}
+
+    <hr>
+    </div>
+
+{% endfor %}
+
+
+
+
+<h2>Мои сделки</h2>
+{% for deed in deeds %}
+
+    <div>
+    <hr>
+    Продукт - {{ deed.product.name }}<br>
+    {% if deed.date_signed != None %}
+            <h5>Дата подписания - {{ deed.date_signed }} <br> </h5>
+    {% endif %}
+    Сумма - {{ deed.loan_amount }} <br>
+    Размер платежа - {{ deed.regular_payment_size }} <br>
+    Процентная ставка - {{ deed.rate }}% <br>
+    Размер платежа - {{ deed.regular_payment_size }} <br>
+
+    {% if deed.contract != None %}
+            <form target="_blank" method="post" action="/download_contract">
+            {% csrf_token %}
+
+            <input name="client_profile" type="hidden" value="{{ deed.client_profile.id }}">
+            <input type="submit" value="Скачать копию договора">
+            </form>
+            <form target="_blank" method="post" action="/get_mail">
+            {% csrf_token %}
+
+            <input name="deed" type="hidden" value="{{ deed.client_profile_id }}">
+            <input type="submit" value="Получить на почту">
+            </form>    {% endif %}
+    {{ application.status }}
+
+    <hr>
+    </div>
+{% endfor %}
+
+{% endblock %}
+
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+            <link rel="stylesheet" href="{% static 'admin_style.css' %}">
+
+</head>
+<body>
+{% include 'navbar_admin.html' %}
+
+<script>
+window.onload = function define_select_default(){
+    switch ("{{ deed.status }}"){
+        case "В анализе":
+        {
+            document.getElementById("analysis").setAttribute("selected", "selected")
+            break
+        }
+        case "Одобрено кредитной комиссией":
+        {
+            document.getElementById("offer_accepted").setAttribute("selected", "selected")
+            break
+        }
+        case "Отклонено кредитной комиссией":
+        {
+            document.getElementById("offer_rejected").setAttribute("selected", "selected")
+            break
+        }
+        case "Определена дата сделки":
+        {
+            document.getElementById("deed planned").setAttribute("selected", "selected")
+            break
+        }
+        case "Договор подписан":
+        {
+            document.getElementById("deed signed").setAttribute("selected", "selected")
+            break
+        }
+    }
+
+}
+</script>
+
+    <form method="post" id="myForm" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+<br />
+        <br />
+    <select name="status_update" onload="define_select_default({{ deed.status }})">
+        <option id="offer_accepted" value="Одобрено кредитной комиссией">Одобрено кредитной комиссией</option>
+        <option id="offer_rejected" value="Отклонено кредитной комиссией">Отклонено кредитной комиссией</option>
+        <option id="analysis" value="В анализе">В анализе</option>
+        <option id="deed planned" value="Определена дата сделки">Определена дата сделки</option>
+        <option id="deed signed" value="Договор подписан">Договор подписан</option>
+    </select>
+    <input class="submit" type="submit" value="Утвердить изменения">
+    </form>
+
+
+<hr/>
+
+    <h2>Данные клиента</h2>
+    <h5 id="client_card_name">Имя - {{ deed.client_profile.name }}</h5>
+    <h5 id="client_card_last_name">Фамилия - {{ deed.client_profile.last_name }}</h5>
+    <h5 id="client_card_phone">Номер телефона - {{ deed.client_profile.phone_number }}</h5>
+    <h5 id="client_card_product">Продукт - {{ deed.product.name }}</h5>
+    <h5 id="client_card_type">Клиент - {{ deed.client_profile.type }}</h5>
+    <h5 id="client_card_status">Статус - {{ deed.status }}</h5>
+    <h5 id="client_card_amount">Сумма лизинга - {{ deed.loan_amount }} рублей</h5>
+    <h5 id="client_card_monthly_amount">Размер ежемесячного платежа - {{ deed.regular_payment_size }} рублей</h5>
+    <h5 id="client_card_rate">Процентная ставка - {{ deed.rate }}%</h5>
+    <h5 id="client_card_duration">Срок - {{ deed.duration }} месяцев</h5>
+    {% if deed.date_signed != None %}
+            <h5 id="client_card_date_signed">Дата подписания - {{ deed.date_signed }}</h5>
+    {% endif %}
+
+
+    <form id="download_form" target="_blank" method="post" action="{{ download_link }}">
+        {% csrf_token %}
+
+    <input name="client_profile" type="hidden" value="{{ deed.client_profile.id }}">
+    <input class="submit" type="submit" value="Скачать архив документов клиента">
+    </form>
+    {% if deed.client_profile.id != None %}
+    <form target="_blank" method="post" action="/download_contract">
+        {% csrf_token %}
+
+    <input name="client_profile" type="hidden" value="{{ deed.client_profile.id }}">
+    <input class="submit" type="submit" value="Скачать копию договора">
+    </form>
+    {% endif %}
+<script>
+    let myForm
+        function define_form(number){
+            myForm = document.getElementById('Myform_' + number.toString())
+            //document.getElementById('submit').click()
+                topic = document.getElementById('topic_'+String(number)).value
+                id = document.getElementById('id_'+String(number)).value
+                name = document.getElementById('name_'+String(number)).value
+                phone_number = document.getElementById('phone_num_'+String(number)).value
+                date = document.getElementById('date_'+String(number)).value
+
+                deleteData('/api/support_requests/'+ String(id), {
+                    'id': id.toString(),
+                    'name': name.toString(),
+                    'topic': topic.toString(),
+                    'phone_num': phone_number.toString(),
+                    'date': date.toString(),
+                })
+            document.location.reload()
+        }
+    async function deleteData(url, data) {
+    // Default options are marked with *
+                const response = await fetch(url, {
+                method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                  'Content-Type': 'application/json'
+                  // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+              });
+              return response.json(); // parses JSON response into native JavaScript objects
+            }
+</script>
+<script type="text/javascript">
+            var mainContainer = document.getElementById("myData");
+
+			var deals_url = 'http://127.0.0.1:8000/api/support_requests'
+            let x
+			fetch(deals_url)
+			.then((resp) => resp.json())
+			.then(function(data){
+				x = data
+                console.log('Data:', x)
+                for (var i = 0; i < x.length; i++) {
+                    var div = document.createElement("div");
+                    div.setAttribute('class', 'support_request_card')
+                    div.innerHTML = ''
+                    mainContainer.appendChild(div);
+
+                    document.getElementById("support_request_topic_"+i.toString()).innerHTML = String(x[i].topic)
+                    document.getElementById("description_"+i.toString()).innerHTML = String(x[i].name) + ' ' +String(x[i].phone_num) + ' ' +String(x[i].date)
+
+                }
+
+            })
+	</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+            <link rel="stylesheet" href="{% static 'admin_style.css' %}">
+
+</head>
+<body>
+{% include 'navbar_admin.html' %}
+
+<div id="myData">
+
+
+
+</div>
+{#    <div class="support_request_card">#}
+{#    <h2>{{ support_request.topic }} </h2>#}
+{#    <p>{{ support_request.name }}, {{ support_request.phone_num }}, {{ support_request.date }}</p>#}
+{#    <hr />#}
+{#    <form method="post">#}
+{#                {% csrf_token %}#}
+{##}
+{#        <input name="request_id" type="hidden" value="{{ support_request.id }}">#}
+{#        <input type="submit" value="Закрыть запрос">#}
+{#    </form>#}
+{#    <hr />#}
+{#    </div>#}
+<script>
+    let myForm
+        function define_form(number){
+            myForm = document.getElementById('Myform_' + number.toString())
+            //document.getElementById('submit').click()
+                topic = document.getElementById('topic_'+String(number)).value
+                id = document.getElementById('id_'+String(number)).value
+                name = document.getElementById('name_'+String(number)).value
+                phone_number = document.getElementById('phone_num_'+String(number)).value
+                date = document.getElementById('date_'+String(number)).value
+
+                deleteData('/api/support_requests/'+ String(id), {
+                    'id': id.toString(),
+                    'name': name.toString(),
+                    'topic': topic.toString(),
+                    'phone_num': phone_number.toString(),
+                    'date': date.toString(),
+                })
+            document.location.reload()
+        }
+    async function deleteData(url, data) {
+    // Default options are marked with *
+                const response = await fetch(url, {
+                method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                  'Content-Type': 'application/json'
+                  // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+              });
+              return response.json(); // parses JSON response into native JavaScript objects
+            }
+</script>
+<script type="text/javascript">
+            var mainContainer = document.getElementById("myData");
+
+			var deals_url = 'http://127.0.0.1:8000/api/support_requests'
+            let x
+			fetch(deals_url)
+			.then((resp) => resp.json())
+			.then(function(data){
+				x = data
+                console.log('Data:', x)
+                for (var i = 0; i < x.length; i++) {
+                    var div = document.createElement("div");
+                    div.setAttribute('class', 'support_request_card')
+                    div.innerHTML = '<h2 id="support_request_topic_'+ i.toString()+ '"></h2><p id="description_'+i.toString()+'"></p> <hr /> <form id="myForm_'+String(x[i].id)+'" method="post">{% csrf_token %} <input id="id_'+String(x[i].id)+'" type="hidden" value="'+String(x[i].id)+'"> <input id="date_'+String(x[i].id)+'" type="hidden" value="'+String(x[i].date)+'"> <input id="name_'+String(x[i].id)+'" type="hidden" value="'+String(x[i].name)+'"><input id="phone_num_'+String(x[i].id)+'" type="hidden" value="'+String(x[i].phone_num)+'"><input id="topic_'+String(x[i].id)+'" type="hidden" value="'+String(x[i].topic)+'"><input id="submit" type="submit" style="display: None" value="Закрыть запрос"></form> <button onclick="define_form('+String(x[i].id)+')">Закрыть запрос</button><hr />'
+
+                    mainContainer.appendChild(div);
+
+                    document.getElementById("support_request_topic_"+i.toString()).innerHTML = String(x[i].topic)
+                    document.getElementById("description_"+i.toString()).innerHTML = String(x[i].name) + ' ' +String(x[i].phone_num) + ' ' +String(x[i].date)
+
+                }
+
+            })
+	</script>
+</body>
+
+</html>

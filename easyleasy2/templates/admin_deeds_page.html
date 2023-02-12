@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+            <link rel="stylesheet" href="{% static 'admin_style.css' %}">
+
+</head>
+<body>
+{% include 'navbar_admin.html' %}
+
+<div id="myData">
+
+</div>
+
+{#    <div class="deed_card">#}
+{#    <h2><a href="/a/deed/{{ deed.client_profile_id }}">{{ deed.product.name }}</a> </h2>#}
+{#    <h2><b>{{ deed.status }}</b></h2>#}
+{#    <p>{{ deed.client_profile.name }} {{ deed.client_profile.last_name }}</p>#}
+{#    <hr />#}
+{#    </div>#}
+
+<script type="text/javascript">
+
+            var mainContainer = document.getElementById("myData");
+
+			var deals_url = 'http://127.0.0.1:8000/api/deals'
+            let x
+			fetch(deals_url)
+			.then((resp) => resp.json())
+			.then(function(data){
+				x = data
+                console.log('Data:', x)
+                for (var i = 0; i < x.length; i++) {
+                    var div = document.createElement("div");
+                    div.setAttribute('class', 'deed_card')
+                    div.innerHTML = '<h2><a id="deed_product_name_'+i.toString()+'" ></a> </h2> <h2><b id="status_'+i.toString()+'"></b></h2> <p id="description_'+i.toString()+'"></p> <hr />'
+
+                    mainContainer.appendChild(div);
+
+                    document.getElementById("deed_product_name_"+i.toString()).innerHTML = String(x[i].product.name)
+                    document.getElementById("status_"+i.toString()).innerHTML = String(x[i].status)
+                    document.getElementById("description_"+i.toString()).innerHTML = String(x[i].client_profile.name) + ' ' +String(x[i].client_profile.last_name)
+                    document.getElementById("deed_product_name_"+i.toString()).setAttribute('href', '/a/deed/' + String(x[i].id))
+
+                }
+
+            })
+
+	</script>
+</body>
+</html>

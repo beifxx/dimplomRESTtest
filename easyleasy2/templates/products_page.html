@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+            <link rel="stylesheet" href="{% static 'user_products_style.css' %}">
+
+
+</head>
+<body>
+{% include 'navbar_user.html' %}
+
+<div id="myData">
+
+
+
+</div>
+
+<script type="text/javascript">
+
+            var mainContainer = document.getElementById("myData");
+
+			var product_url = 'http://127.0.0.1:8000/api/products'
+            let x
+			fetch(product_url)
+			.then((resp) => resp.json())
+			.then(function(data){
+				x = data
+                console.log('Data:', x)
+                for (var i = 0; i < x.length; i++) {
+                    var div = document.createElement("div");
+                    div.setAttribute('class', 'product_card')
+                    div.innerHTML = '<h2><a id="product_name_'+ i.toString() +'"></a> </h2><a id="product_link_'+i.toString()+'"></a><a href="/u/support/"></a> <p id="product_description_'+i.toString()+'"></p><hr />'
+
+                    mainContainer.appendChild(div);
+
+                    document.getElementById("product_name_"+i.toString()).innerHTML = String(x[i].name)
+                    document.getElementById("product_description_"+i.toString()).innerHTML = "Сроки от " + String(x[i].min_duration)
+                        + " месяцев, сумма от " + String(x[i].min_amount) + " рублей"
+                    document.getElementById("product_name_"+i.toString()).setAttribute('href', '/u/product/' + String(x[i].id))
+                    document.getElementById("product_link_"+i.toString()).setAttribute('href', '/u/product/' + String(x[i].id))
+
+
+                }
+
+            })
+
+	</script>
+</body>
+</html>

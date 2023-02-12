@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+        <link rel="stylesheet" href="{% static 'news_style.css' %}">
+
+</head>
+<body>
+{% include 'navbar_user.html' %}
+    <div id="myData">
+
+    </div>
+
+<script type="text/javascript">
+
+            var mainContainer = document.getElementById("myData");
+
+			var news_url = 'http://127.0.0.1:8000/api/news'
+            let x
+			fetch(news_url)
+			.then((resp) => resp.json())
+			.then(function(data){
+				x = data
+                console.log('Data:', x)
+                for (var i = 0; i < x.length; i++) {
+                    var div = document.createElement("div");
+                    div.setAttribute('class', 'product_card')
+                    div.innerHTML = '<div class="newsflash"><h2 id="news_product_name_'+i.toString()+'"></h2> <p id="news_description_'+i.toString()+'"></p></div><hr/>'
+
+                    mainContainer.appendChild(div);
+
+                    document.getElementById("news_product_name_"+i.toString()).innerHTML = String(x[i].product.name)
+                    document.getElementById("news_description_"+i.toString()).innerHTML = String(x[i].description)
+
+
+                }
+
+            })
+
+	</script>
+</body>
+</html>

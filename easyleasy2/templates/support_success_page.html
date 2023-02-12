@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'support_style.css' %}">
+</head>
+    <body>
+{% include 'navbar_user.html' %}
+
+{% block content %}
+<p>Успех! Наш сотрудник свяжется с вами по телефону в ближайшее время</p>
+    <a href="/u/home/">Вернуться на главную страницу</a>
+{% endblock %}
+
+
+
+
+
+</body>
+</html>

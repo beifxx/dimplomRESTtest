@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+            <link rel="stylesheet" href="{% static 'admin_style.css' %}">
+
+</head>
+<body>
+{% include 'navbar_admin.html' %}
+
+{% block content %}
+
+    <form method="post">
+    {{ form }}
+    {% csrf_token %}
+    <input type="hidden" name="accept" value="accept">
+    <input type="submit" class="submit" value="Одобрить заявку">
+    </form>
+
+<hr/>
+    <form  method="post">
+    {% csrf_token %}
+    <input type="hidden" name="reject" value="reject">
+    <input type="submit" class="submit" value="Отклонить заявку">
+    </form>
+<hr/>
+
+    <h4>Калькулятор платежей</h4>
+    <form action="javascript:void(0);" name="calculator" onsubmit="calculate()">
+        <input type="number" placeholder="Процентная ставка" id="percent">
+        <input type="number" placeholder="Размер лизинга" id="loan_amount">
+        <input type="number" placeholder="Срок" id="duration">
+        <input class="submit" type="submit" value="Рассчитать">
+    </form>
+
+    <p>Ежемесячный платеж: </p><p id="result"></p>
+<hr/>
+<script>
+
+        function calculate() {
+            let percent = document.getElementById("percent").value/100
+            let loan_amount = document.getElementById("loan_amount").value
+            let duration = document.getElementById("duration").value
+            console.log(percent)
+            console.log(loan_amount)
+            console.log(duration)
+            let output = 0
+            output = ((loan_amount)/duration) + (loan_amount*percent)/duration
+            //output.toPrecision(2)
+            document.getElementById('result').innerHTML = output.toPrecision(5)
+        }
+</script>
+
+
+
+    <h2>Данные клиента</h2>
+    <h5>Имя - {{ application.client_profile.name }}</h5>
+    <h5>Фамилия - {{ application.client_profile.last_name }}</h5>
+    <h5>Номер телефона - {{ application.client_profile.phone_number }}</h5>
+    <h5>Продукт - {{ application.product.name }}</h5>
+    <h5>Клиент - {{ application.client_profile.type }}</h5>
+    <h5>Статус - {{ application.status }}</h5>
+
+
+    <form id="download_form" target="_blank" method="post" action="{{ download_link }}">
+        {% csrf_token %}
+
+    <input name="client_profile" type="hidden" value="{{ application.client_profile.id }}">
+    <input class="submit" type="submit" value="Скачать архив документов">
+    </form>
+{% endblock %}
+</body>
+</html>

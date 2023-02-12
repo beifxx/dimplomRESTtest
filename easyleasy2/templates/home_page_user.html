@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'home_user.css' %}">
+    <script type="text/javascript">
+
+			var product_url = 'http://127.0.0.1:8000/api/products/1'
+			var news_url = 'http://127.0.0.1:8000/api/news/1'
+            let x
+			fetch(product_url)
+			.then((resp) => resp.json())
+			.then(function(data){
+				x = data
+                console.log('Data:', x)
+
+                document.getElementById("product-name").innerHTML = String(x.name)
+                document.getElementById("product-description").innerHTML = "Сроки от " + String(x.min_duration)
+                    + " месяцев, сумма от " + String(x.min_amount) + " рублей"
+                document.getElementById("product-name").setAttribute('href', '/u/product/' + String(x.id))
+                document.getElementById("product-id").setAttribute('href', '/u/product/' + String(x.id))
+
+            })
+
+            fetch(news_url)
+			.then((resp) => resp.json())
+			.then(function(data){
+				x = data
+                console.log('Data:', x)
+
+                document.getElementById("promo-product-name").innerHTML = String(x.product.name)
+                document.getElementById("promo-description").innerHTML = String(x.description)
+            })
+
+	</script>
+</head>
+<body>
+{% include 'navbar_user.html' %}
+{% block content %}
+    <div class="newsflash">
+    <h1>Последние новости  </h1>
+
+    <h2 id="promo-product-name"></h2>
+
+    <p id="promo-description"></p>
+    </div>
+    <hr />
+    <br>
+    <br>
+    <br>
+    <br>
+<div class="product">
+    <h1>Наши продукты</h1>
+    <h2><a id="product-name"></a> </h2>
+        <a class="blue_link" id="product-id">Подробнее</a>   <a class="blue_link" href="/u/support/">Заказать консультацию</a>
+        <hr />
+    <p id="product-description"></p>
+    <a class="get_best_offer_link" href="/u/get_best">Подобрать самые выгодные предложения по параметрам</a>
+</div>
+
+{% endblock %}
+
+</body>
+</html>

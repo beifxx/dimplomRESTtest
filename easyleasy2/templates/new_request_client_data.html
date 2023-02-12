@@ -1,0 +1,79 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'new_application_style.css' %}">
+
+</head>
+    <body>
+{% include 'navbar_user.html' %}
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data" id="myForm">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+        <select class="custom-select" name="product_id" style="width:200px;">
+    {% for product in products %}
+        <option value="{{ product.id }}">{{ product.name }}</option>
+    {% endfor %}
+
+    </select>
+<br/>
+    <input onclick="sendData()" class="submit_button" type="submit" value="Далее">
+</form>
+{% endblock %}
+{#<script>#}
+{#    const myForm = document.getElementById('myForm')#}
+{#    async function postData(url, data) {#}
+{#    // Default options are marked with *#}
+{#    const response = await fetch(url, {#}
+{#    method: 'POST', // *GET, POST, PUT, DELETE, etc.#}
+{#    mode: 'cors', // no-cors, *cors, same-origin#}
+{#    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached#}
+{#    credentials: 'same-origin', // include, *same-origin, omit#}
+{#    headers: {#}
+{#      'Content-Type': 'application/json'#}
+{#      // 'Content-Type': 'application/x-www-form-urlencoded',#}
+{#    },#}
+{#    redirect: 'follow', // manual, *follow, error#}
+{#    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url#}
+{#    body: JSON.stringify(data) // body data type must match "Content-Type" header#}
+{#  });#}
+{#  return response.json(); // parses JSON response into native JavaScript objects#}
+{#}#}
+{##}
+{#function sleep(milliseconds) {#}
+{#  const date = Date.now();#}
+{#  let currentDate = null;#}
+{#  do {#}
+{#    currentDate = Date.now();#}
+{#  } while (currentDate - date < milliseconds);#}
+{#}#}
+{#    myForm.addEventListener('submit', function (e){#}
+{#        e.preventDefault()#}
+{#        topic = document.getElementById('topic').value#}
+{#        name = document.getElementById('name').value#}
+{#        phone_number = document.getElementById('phone_number').value#}
+{##}
+{#        postData('/api/support_requests', {#}
+{#            'name': name.toString(),#}
+{#            'topic': topic.toString(),#}
+{#            'phone_num': phone_number.toString(),#}
+{#            'date': String(new Date().toISOString().slice(0, 10))#}
+{#        })#}
+{#        sleep(300)#}
+{#        window.location.href = '/u/support_success/'#}
+{#    })#}
+{#</script>#}
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'support_style.css' %}">
+</head>
+    <body>
+{% include 'navbar_user.html' %}
+
+{% block content %}
+    <div class="leasing_type">
+        <a href="/u/phys/new_request">Заявка для физлиц</a>
+        <a href="/u/jur/new_request">Заявка для юрлиц</a>
+    </div>
+
+{% endblock %}
+</body>
+</html>
