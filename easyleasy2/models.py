@@ -48,7 +48,6 @@ class Document(models.Model):
 
 
 class Product(models.Model):
-    # id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, verbose_name='Название')
     min_duration = models.IntegerField(verbose_name='Минимальная длительность')
     max_duration = models.IntegerField(verbose_name='Максимальна длительность')

@@ -2,6 +2,21 @@ from rest_framework import serializers
 from easyleasy2.models import *
 
 
+class RelatedFieldAlternative(serializers.PrimaryKeyRelatedField):
+    def __init__(self, **kwargs):
+        self.serializer = kwargs.pop('serializer', None)
+        if self.serializer is not None and not issubclass(self.serializer, serializers.Serializer):
+            raise TypeError('"serializer" is not a valid serializer class')
+
+        super().__init__(**kwargs)
+
+    def use_pk_only_optimization(self):
+        return False if self.serializer else True
+
+    def to_representation(self, instance):
+        if self.serializer:
+            return self.serializer(instance, context=self.context).data
+        return super().to_representation(instance)
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
@@ -10,6 +25,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class PromoSerializer(serializers.ModelSerializer):
+    product = RelatedFieldAlternative(queryset=Product.objects.all(), serializer=ProductSerializer)
     class Meta:
         model = Promo
         fields = '__all__'
@@ -23,6 +39,7 @@ class SupportRequestSerializer(serializers.ModelSerializer):
 
 
 class InterestRateSerializer(serializers.ModelSerializer):
+    product = RelatedFieldAlternative(queryset=Product.objects.all(), serializer=ProductSerializer)
     class Meta:
         model = Interest_Rate
         fields = '__all__'
@@ -37,12 +54,16 @@ class ClientProfileSerializer(serializers.ModelSerializer):
 
 
 class ApplicationSerializer(serializers.ModelSerializer):
+    client_profile = RelatedFieldAlternative(queryset=ClientProfile.objects.all(), serializer=ClientProfileSerializer)
+    product = RelatedFieldAlternative(queryset=Product.objects.all(), serializer=ProductSerializer)
     class Meta:
         model = Application
         fields = '__all__'
         depth = 1
 
 class DealSerializer(serializers.ModelSerializer):
+    client_profile = RelatedFieldAlternative(queryset=ClientProfile.objects.all(), serializer=ClientProfileSerializer)
+    product = RelatedFieldAlternative(queryset=Product.objects.all(), serializer=ProductSerializer)
     class Meta:
         model = Deal
         fields = '__all__'
