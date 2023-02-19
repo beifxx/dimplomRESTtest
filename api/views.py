@@ -9,8 +9,8 @@ from easyleasy2.models import *
 
 
 class ProductAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
@@ -31,8 +31,8 @@ class ProductAPIView(APIView):
 
 
 class ProductDetailsAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         try:
@@ -67,8 +67,8 @@ class ProductDetailsAPIView(APIView):
 
 
 class PromoAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
@@ -89,8 +89,8 @@ class PromoAPIView(APIView):
 
 
 class PromoDetailsAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         try:
@@ -125,8 +125,8 @@ class PromoDetailsAPIView(APIView):
 
 
 class SupportRequestAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
@@ -147,8 +147,8 @@ class SupportRequestAPIView(APIView):
 
 
 class SupportRequestDetailsAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         try:
@@ -183,8 +183,8 @@ class SupportRequestDetailsAPIView(APIView):
 
 
 class InterestRateAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
@@ -205,8 +205,8 @@ class InterestRateAPIView(APIView):
 
 
 class InterestRateDetailsAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         try:
@@ -241,8 +241,8 @@ class InterestRateDetailsAPIView(APIView):
 
 
 class ClientProfileAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
@@ -263,8 +263,8 @@ class ClientProfileAPIView(APIView):
 
 
 class ClientProfileDetailsAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         try:
@@ -299,8 +299,8 @@ class ClientProfileDetailsAPIView(APIView):
 
 
 class ApplicationAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
@@ -322,8 +322,8 @@ class ApplicationAPIView(APIView):
 
 
 class ApplicationDetailsAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         try:
@@ -358,8 +358,8 @@ class ApplicationDetailsAPIView(APIView):
 
 
 class DealAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
@@ -380,8 +380,8 @@ class DealAPIView(APIView):
 
 
 class DealDetailsAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         try:
@@ -416,8 +416,8 @@ class DealDetailsAPIView(APIView):
 
 
 class DocumentAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
@@ -438,8 +438,8 @@ class DocumentAPIView(APIView):
 
 
 class DocumentToClientAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request, client_id):
         try:

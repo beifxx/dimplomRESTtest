@@ -45,8 +45,13 @@ class InterestRateSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
-
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 class ClientProfileSerializer(serializers.ModelSerializer):
+
+    user = RelatedFieldAlternative(queryset=User.objects.all(), serializer=UserSerializer)
     class Meta:
         model = ClientProfile
         fields = '__all__'
